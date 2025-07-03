@@ -1,0 +1,629 @@
+package StoreInventoryManagementSystem;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Store extends javax.swing.JFrame {
+
+    public Store() {
+        initComponents();
+        loadTableData();     // Load table into JTable
+        loadProductIDs();    // Populate ProductIDComboBox
+        loadSales();         // Show current sales from DB
+    }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        StoreTable = new javax.swing.JTable();
+        AddButton = new javax.swing.JButton();
+        UpdateButton = new javax.swing.JButton();
+        DeleteButton = new javax.swing.JButton();
+        SellButton = new javax.swing.JButton();
+        SearchButton = new javax.swing.JButton();
+        RefreshButton = new javax.swing.JButton();
+        ResetSalesButton = new javax.swing.JButton();
+        ProductIDComboBox = new javax.swing.JComboBox<>();
+        SearchTextField = new javax.swing.JTextField();
+        SalesLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(51, 255, 255));
+
+        jLabel1.setFont(new java.awt.Font("Showcard Gothic", 0, 24)); // NOI18N
+        jLabel1.setText("Store & Inventory");
+
+        StoreTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null}
+            },
+            new String [] {
+                "ProductID", "ProductName", "Price", "Quantity"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(StoreTable);
+
+        AddButton.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        AddButton.setText("Add Product");
+        AddButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddButtonActionPerformed(evt);
+            }
+        });
+
+        UpdateButton.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        UpdateButton.setText("Update Product");
+        UpdateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateButtonActionPerformed(evt);
+            }
+        });
+
+        DeleteButton.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        DeleteButton.setText("Delete Product");
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteButtonActionPerformed(evt);
+            }
+        });
+
+        SellButton.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        SellButton.setText("Sell Product");
+        SellButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SellButtonActionPerformed(evt);
+            }
+        });
+
+        SearchButton.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        SearchButton.setText("Search");
+        SearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchButtonActionPerformed(evt);
+            }
+        });
+
+        RefreshButton.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        RefreshButton.setText("Refresh Table");
+        RefreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshButtonActionPerformed(evt);
+            }
+        });
+
+        ResetSalesButton.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        ResetSalesButton.setText("Reset Sales");
+        ResetSalesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetSalesButtonActionPerformed(evt);
+            }
+        });
+
+        ProductIDComboBox.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        ProductIDComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ProductIDComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProductIDComboBoxActionPerformed(evt);
+            }
+        });
+
+        SearchTextField.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        SearchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchTextFieldActionPerformed(evt);
+            }
+        });
+
+        SalesLabel.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        SalesLabel.setText("Sales:");
+
+        jLabel2.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        jLabel2.setText("Select Product ID:");
+
+        jLabel3.setFont(new java.awt.Font("Showcard Gothic", 0, 14)); // NOI18N
+        jLabel3.setText("Search:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(283, 283, 283)
+                .addComponent(SalesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(415, 415, 415))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(236, 236, 236)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(416, 416, 416))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(UpdateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(SellButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ProductIDComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(DeleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(SearchTextField)
+                            .addComponent(RefreshButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ResetSalesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(SearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(63, 63, 63))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(162, 162, 162))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(AddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(31, 31, 31)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ProductIDComboBox)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SellButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(UpdateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(DeleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(SearchTextField)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(RefreshButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(41, 41, 41)
+                        .addComponent(ResetSalesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(SalesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, Short.MAX_VALUE)
+                .addGap(31, 31, 31))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddButtonActionPerformed
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String productName = JOptionPane.showInputDialog(this, "Enter Product Name:");
+            String priceStr = JOptionPane.showInputDialog(this, "Enter Price:");
+            String quantityStr = JOptionPane.showInputDialog(this, "Enter Quantity:");
+
+            if (productName == null || priceStr == null || quantityStr == null) {
+                return;
+            }
+
+            double price = Double.parseDouble(priceStr);
+            int quantity = Integer.parseInt(quantityStr);
+
+            String sql = "INSERT INTO products (ProductName, Price, Quantity) VALUES (?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, productName);
+            stmt.setDouble(2, price);
+            stmt.setInt(3, quantity);
+
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(this, "Product added successfully.");
+                loadProductsToTable();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error adding product: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_AddButtonActionPerformed
+
+    private void UpdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateButtonActionPerformed
+        String selectedProductId = (String) ProductIDComboBox.getSelectedItem();
+
+        if (selectedProductId == null) {
+            JOptionPane.showMessageDialog(this, "Please select a Product ID to update.");
+            return;
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            // Ask for new product details
+            String newName = JOptionPane.showInputDialog(this, "Enter new Product Name:");
+            String newPriceStr = JOptionPane.showInputDialog(this, "Enter new Price:");
+            String newQuantityStr = JOptionPane.showInputDialog(this, "Enter new Quantity:");
+
+            // If user cancels or leaves blank
+            if (newName == null || newPriceStr == null || newQuantityStr == null) {
+                return;
+            }
+
+            double newPrice = Double.parseDouble(newPriceStr);
+            int newQuantity = Integer.parseInt(newQuantityStr);
+
+            String sql = "UPDATE products SET ProductName = ?, Price = ?, Quantity = ? WHERE ProductID = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, newName);
+            stmt.setDouble(2, newPrice);
+            stmt.setInt(3, newQuantity);
+            stmt.setInt(4, Integer.parseInt(selectedProductId));
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                JOptionPane.showMessageDialog(this, "Product updated successfully.");
+                loadProductsToTable(); // Refresh table
+            } else {
+                JOptionPane.showMessageDialog(this, "Update failed. No product found.");
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating product: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_UpdateButtonActionPerformed
+
+    private void RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshButtonActionPerformed
+        loadTableData();      // Reload full product table
+        loadProductIDs();     // Reload combobox items
+        SearchTextField.setText(""); // Clear search bar 
+    }//GEN-LAST:event_RefreshButtonActionPerformed
+
+    private void SellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellButtonActionPerformed
+        String selectedProductId = (String) ProductIDComboBox.getSelectedItem();
+
+        if (selectedProductId == null) {
+            JOptionPane.showMessageDialog(this, "Please select a Product ID to sell.");
+            return;
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            int productId = Integer.parseInt(selectedProductId);
+
+            // Get current product data
+            String sql = "SELECT Price, Quantity FROM products WHERE ProductID = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, productId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                double price = rs.getDouble("Price");
+                int currentQty = rs.getInt("Quantity");
+
+                String qtyStr = JOptionPane.showInputDialog(this, "Enter quantity to sell:");
+                if (qtyStr == null) {
+                    return;
+                }
+                int qtyToSell = Integer.parseInt(qtyStr);
+
+                if (qtyToSell <= 0) {
+                    JOptionPane.showMessageDialog(this, "Quantity must be positive.");
+                    return;
+                }
+
+                if (qtyToSell > currentQty) {
+                    JOptionPane.showMessageDialog(this, "Not enough stock.");
+                    return;
+                }
+
+                // Update quantity in DB
+                int newQty = currentQty - qtyToSell;
+                String updateSql = "UPDATE products SET Quantity = ? WHERE ProductID = ?";
+                PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+                updateStmt.setInt(1, newQty);
+                updateStmt.setInt(2, productId);
+                updateStmt.executeUpdate();
+
+                // âœ… Compute total sale
+                double totalSaleAmount = price * qtyToSell;
+
+                // âœ… Update sales
+                updateSales(totalSaleAmount);
+
+                JOptionPane.showMessageDialog(this, "Product sold successfully!");
+
+                loadProductsToTable();  // Refresh table
+                loadSales();            // Refresh sales label
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error selling product: " + e.getMessage());
+        }
+    }//GEN-LAST:event_SellButtonActionPerformed
+
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+        String selectedProductId = (String) ProductIDComboBox.getSelectedItem();
+
+        if (selectedProductId == null) {
+            JOptionPane.showMessageDialog(this, "Please select a Product ID to delete.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to delete this product?",
+                "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "DELETE FROM products WHERE ProductID = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, Integer.parseInt(selectedProductId));
+
+            int rowsDeleted = stmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                JOptionPane.showMessageDialog(this, "Product deleted successfully.");
+                loadProductsToTable(); // Refresh table and ComboBox
+            } else {
+                JOptionPane.showMessageDialog(this, "No product found with the selected ID.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error deleting product: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+
+    private void ProductIDComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductIDComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ProductIDComboBoxActionPerformed
+
+    private void ResetSalesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetSalesButtonActionPerformed
+    resetSalesInDatabase();
+    }//GEN-LAST:event_ResetSalesButtonActionPerformed
+    private void resetSalesInDatabase() {
+    try (Connection conn = DatabaseConnection.getConnection()) {
+        String sql = "UPDATE sales SET TotalSales = 0 WHERE ID = 1";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.executeUpdate();
+
+        // Also update the label to reflect the reset
+        SalesLabel.setText("Sales: PHP 0.00");
+
+        JOptionPane.showMessageDialog(this, "Sales have been reset successfully.");
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error resetting sales: " + e.getMessage());
+    }
+}    
+    
+    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
+            Search();  
+    }//GEN-LAST:event_SearchButtonActionPerformed
+
+    private void SearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchTextFieldActionPerformed
+        Search(); 
+    }//GEN-LAST:event_SearchTextFieldActionPerformed
+    private void Search() {
+    String searchText = SearchTextField.getText().trim();
+
+    if (searchText.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter a search term.");
+        return;
+    }
+
+    DefaultTableModel model = (DefaultTableModel) StoreTable.getModel();
+    model.setRowCount(0); // Clear table
+
+    try (Connection conn = DatabaseConnection.getConnection()) {
+        String sql = "SELECT * FROM products WHERE ProductName LIKE ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, "%" + searchText + "%");
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            int id = rs.getInt("ProductID");
+            String name = rs.getString("ProductName");
+            double price = rs.getDouble("Price");
+            int quantity = rs.getInt("Quantity");
+
+            model.addRow(new Object[]{id, name, price, quantity});
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error searching products: " + e.getMessage());
+    }
+}
+    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Store.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Store.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Store.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Store.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Store().setVisible(true);
+            }
+        });
+    }
+
+    private void loadProductsToTable() {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "SELECT * FROM products";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            DefaultTableModel model = (DefaultTableModel) StoreTable.getModel();
+            model.setRowCount(0); // Clear table first
+
+            ProductIDComboBox.removeAllItems();
+
+            while (rs.next()) {
+                int id = rs.getInt("ProductID");
+                String name = rs.getString("ProductName");
+                double price = rs.getDouble("Price");
+                int quantity = rs.getInt("Quantity");
+
+                model.addRow(new Object[]{id, name, price, quantity});
+                ProductIDComboBox.addItem(String.valueOf(id)); // Update ComboBox
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading products: " + e.getMessage());
+        }
+    }
+    
+    private void loadTableData() {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "SELECT * FROM products";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            DefaultTableModel model = (DefaultTableModel) StoreTable.getModel();
+            model.setRowCount(0);
+
+            while (rs.next()) {
+                int id = rs.getInt("ProductID");
+                String name = rs.getString("ProductName");
+                double price = rs.getDouble("Price");
+                int quantity = rs.getInt("Quantity");
+
+                model.addRow(new Object[]{id, name, price, quantity});
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading table data: " + e.getMessage());
+        }
+    }
+
+    private void loadProductIDs() {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "SELECT ProductID FROM products";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            ProductIDComboBox.removeAllItems();
+            while (rs.next()) {
+                ProductIDComboBox.addItem(String.valueOf(rs.getInt("ProductID")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading product IDs: " + e.getMessage());
+        }
+    }
+
+    private void loadSales() {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "SELECT TotalSales FROM sales WHERE ID = 1";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                double totalSales = rs.getDouble("TotalSales");
+                SalesLabel.setText("Sales: PHP " + String.format("%.2f", totalSales));
+            } else {
+                SalesLabel.setText("Sales: PHP 0.00");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading sales data: " + e.getMessage());
+        }
+    }
+
+    private void updateSales(double amount) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String checkSql = "SELECT * FROM sales WHERE ID = 1";
+            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next()) {
+                double currentSales = rs.getDouble("TotalSales");
+                double updatedSales = currentSales + amount;
+
+                String updateSql = "UPDATE sales SET TotalSales = ? WHERE ID = 1";
+                PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+                updateStmt.setDouble(1, updatedSales);
+                updateStmt.executeUpdate();
+            } else {
+                String insertSql = "INSERT INTO sales (ID, TotalSales) VALUES (1, ?)";
+                PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+                insertStmt.setDouble(1, amount);
+                insertStmt.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error updating sales: " + e.getMessage());
+        }
+    }
+
+        private double totalSales = 0.0;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AddButton;
+    private javax.swing.JButton DeleteButton;
+    private javax.swing.JComboBox<String> ProductIDComboBox;
+    private javax.swing.JButton RefreshButton;
+    private javax.swing.JButton ResetSalesButton;
+    private javax.swing.JLabel SalesLabel;
+    private javax.swing.JButton SearchButton;
+    private javax.swing.JTextField SearchTextField;
+    private javax.swing.JButton SellButton;
+    private javax.swing.JTable StoreTable;
+    private javax.swing.JButton UpdateButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    // End of variables declaration//GEN-END:variables
+}
